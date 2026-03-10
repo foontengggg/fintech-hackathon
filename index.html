@@ -205,7 +205,7 @@
         /* 4-COLUMN LAYOUT */
         .layout {
             display: grid;
-            grid-template-columns: 200px 1fr 240px 230px;
+            grid-template-columns: 248px 1.4fr 270px 280px;
             height: 100vh;
             padding-top: 50px;
             position: relative;
@@ -323,8 +323,8 @@
         .spark {
             display: flex;
             align-items: flex-end;
-            gap: 1px;
-            height: 32px;
+            gap: 2px;
+            height: 18px;
             margin-bottom: 4px;
         }
 
@@ -594,7 +594,6 @@
             display: flex;
             flex-direction: column;
             gap: 7px;
-            max-height: 80vh;
         }
 
         .feed::-webkit-scrollbar {
@@ -1318,18 +1317,17 @@
         .sig-noise {
             background: var(--text-dim);
         }
-
+    
         /* ANIMATED MAP LINES CSS */
         @keyframes dash {
-            to {
-                stroke-dashoffset: -20;
-            }
+          to {
+            stroke-dashoffset: -20;
+          }
         }
-
         path.animated-line {
-            animation: dash 1s linear infinite;
+          animation: dash 1s linear infinite;
         }
-    </style>
+</style>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
@@ -1549,121 +1547,61 @@
     </div>
 
 
-
+    
     <!-- MEMORY VAULT LAYOUT -->
     <div class="layout" id="vault-layout" style="display: none; padding: 65px 15px 15px;">
-        <div class="col noborder"
-            style="background:var(--bg-panel); border-radius: 12px; border: 1px solid var(--border); overflow-y: auto;">
-            <div class="col-hd" style="border-bottom: 1px solid var(--border); padding: 15px 20px;">
-                <div class="col-title">🗄️ Memory Vault</div>
-                <div class="col-sub">Historical macro events, archived news, and past market outcomes</div>
+        <div class="col noborder" style="background:var(--bg-panel); border-radius: 12px; border: 1px solid var(--border); overflow-y: auto;">
+            <div class="col-hd" style="border-bottom: 1px solid var(--border); padding: 15px 20px; display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <div class="col-title">🗄️ Memory Vault</div>
+                    <div class="col-sub" style="margin-top: 2px;">Historical macro events, archived news, and past market outcomes</div>
+                </div>
+                <!-- Vault Search -->
+                <div style="position: relative; width: 260px;">
+                    <input class="sinput vault-bar" id="vault-search" type="text" placeholder="⌕ Search history (e.g. rate hike)..." 
+                        oninput="filterVault(this.value)" 
+                        style="width: 100%; border-radius: 20px; padding: 8px 14px 8px 30px;" />
+                    <span style="position: absolute; left: 12px; top: 8px; color: var(--text-dim);">⌕</span>
+                </div>
             </div>
-
-            <table
-                style="width: 100%; border-collapse: collapse; text-align: left; font-family: 'DM Sans', sans-serif;">
+            
+            <table style="width: 100%; border-collapse: collapse; text-align: left; font-family: 'DM Sans', sans-serif;">
                 <thead>
                     <tr style="border-bottom: 1px solid var(--border); background: var(--bg-hover);">
-                        <th style="padding: 12px 20px; font-size: 11px; color: var(--text-dim); font-weight: 500;">DATE
-                        </th>
-                        <th style="padding: 12px 20px; font-size: 11px; color: var(--text-dim); font-weight: 500;">MACRO
-                            EVENT</th>
-                        <th style="padding: 12px 20px; font-size: 11px; color: var(--text-dim); font-weight: 500;">
-                            PREDICTION MKT PROB</th>
-                        <th style="padding: 12px 20px; font-size: 11px; color: var(--text-dim); font-weight: 500;">
-                            OUTCOME</th>
-                        <th style="padding: 12px 20px; font-size: 11px; color: var(--text-dim); font-weight: 500;">ASSET
-                            IMPACT (30D)</th>
+                        <th style="padding: 12px 20px; font-size: 11px; color: var(--text-dim); font-weight: 500;">DATE</th>
+                        <th style="padding: 12px 20px; font-size: 11px; color: var(--text-dim); font-weight: 500;">MACRO EVENT</th>
+                        <th style="padding: 12px 20px; font-size: 11px; color: var(--text-dim); font-weight: 500;">PREDICTION MKT PROB</th>
+                        <th style="padding: 12px 20px; font-size: 11px; color: var(--text-dim); font-weight: 500;">OUTCOME</th>
+                        <th style="padding: 12px 20px; font-size: 11px; color: var(--text-dim); font-weight: 500;">ASSET IMPACT (30D)</th>
                     </tr>
                 </thead>
                 <tbody id="vaultTableBody">
-                    <tr style="border-bottom: 1px solid var(--border); cursor: pointer;"
-                        onclick="alert('View archived Guardian news for SVB collapse.')">
-                        <td style="padding: 16px 20px; font-family: 'IBM Plex Mono', monospace; font-size: 12px;">Mar
-                            2023</td>
-                        <td style="padding: 16px 20px; font-weight: 500;">SVB Collapse & Regional Bank Crisis</td>
-                        <td
-                            style="padding: 16px 20px; font-family: 'IBM Plex Mono', monospace; color: var(--signal-hot);">
-                            88%</td>
-                        <td style="padding: 16px 20px;">
-                            <div class="badge b-s">REALIZED</div>
-                        </td>
-                        <td style="padding: 16px 20px; font-family: 'IBM Plex Mono', monospace;"><span
-                                style="color:var(--signal-hot)">Eq -4.5%</span> <span
-                                style="color:var(--accent-teal)">Bd +2.1%</span></td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid var(--border); cursor: pointer;">
-                        <td style="padding: 16px 20px; font-family: 'IBM Plex Mono', monospace; font-size: 12px;">Oct
-                            2023</td>
-                        <td style="padding: 16px 20px; font-weight: 500;">10Y Treasury Reaches 5.0%</td>
-                        <td
-                            style="padding: 16px 20px; font-family: 'IBM Plex Mono', monospace; color: var(--signal-hot);">
-                            74%</td>
-                        <td style="padding: 16px 20px;">
-                            <div class="badge b-s">REALIZED</div>
-                        </td>
-                        <td style="padding: 16px 20px; font-family: 'IBM Plex Mono', monospace;"><span
-                                style="color:var(--signal-hot)">Eq -6.2%</span> <span style="color:var(--signal-hot)">Bd
-                                -3.4%</span></td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid var(--border); cursor: pointer;">
-                        <td style="padding: 16px 20px; font-family: 'IBM Plex Mono', monospace; font-size: 12px;">Jan
-                            2024</td>
-                        <td style="padding: 16px 20px; font-weight: 500;">Fed Cuts Rates in Q1</td>
-                        <td
-                            style="padding: 16px 20px; font-family: 'IBM Plex Mono', monospace; color: var(--accent-cyan);">
-                            22%</td>
-                        <td style="padding: 16px 20px;">
-                            <div class="badge b-n">FALSE</div>
-                        </td>
-                        <td style="padding: 16px 20px; font-family: 'IBM Plex Mono', monospace;"><span
-                                style="color:var(--text-dim)">Minimal Baseline</span></td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid var(--border); cursor: pointer;">
-                        <td style="padding: 16px 20px; font-family: 'IBM Plex Mono', monospace; font-size: 12px;">Jul
-                            2024</td>
-                        <td style="padding: 16px 20px; font-weight: 500;">Bank of Japan Rate Hike (Yen Carry Unwind)
-                        </td>
-                        <td
-                            style="padding: 16px 20px; font-family: 'IBM Plex Mono', monospace; color: var(--signal-hot);">
-                            81%</td>
-                        <td style="padding: 16px 20px;">
-                            <div class="badge b-s">REALIZED</div>
-                        </td>
-                        <td style="padding: 16px 20px; font-family: 'IBM Plex Mono', monospace;"><span
-                                style="color:var(--signal-hot)">Eq Vol +65%</span> <span
-                                style="color:var(--signal-hot)">FX JPY +11%</span></td>
-                    </tr>
+                    <!-- Javascript will dynamically inject rows here -->
                 </tbody>
             </table>
         </div>
     </div>
 
     <!-- CONNECTOR LAYOUT -->
-    <div class="layout" id="connector-layout"
-        style="display: none; grid-template-columns: 2fr 1fr; gap: 15px; padding: 65px 15px 15px;">
-        <div class="col noborder"
-            style="background:var(--bg-panel); border-radius: 12px; border: 1px solid var(--border);">
+    <div class="layout" id="connector-layout" style="display: none; grid-template-columns: 2fr 1fr; gap: 15px; padding: 65px 15px 15px;">
+        <div class="col noborder" style="background:var(--bg-panel); border-radius: 12px; border: 1px solid var(--border);">
             <div class="col-hd" style="border-bottom: 1px solid var(--border); padding: 15px 20px;">
                 <div class="col-title">🌍 Global Macro Events Map</div>
                 <div class="col-sub">Select active nodes to calculate multi-asset cross impacts</div>
             </div>
-            <div id="macroMap"
-                style="height: calc(100% - 50px); width: 100%; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; z-index: 10;">
-            </div>
+            <div id="macroMap" style="height: calc(100% - 50px); width: 100%; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; z-index: 10;"></div>
         </div>
-
-        <div class="col noborder right"
-            style="background:var(--bg-panel); border-radius: 12px; border: 1px solid var(--border);">
+        
+        <div class="col noborder right" style="background:var(--bg-panel); border-radius: 12px; border: 1px solid var(--border);">
             <div class="asset-section" style="border-bottom: 1px solid var(--border); padding: 15px 20px;">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
                     <div class="col-title">⚡ Simulated Asset Impact</div>
                     <div class="col-sub">LIVE AGGREGATE</div>
                 </div>
-                <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-dim);margin-bottom:15px;"
-                    id="selectedEventsDisplay">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-dim);margin-bottom:15px;" id="selectedEventsDisplay">
                     No events selected. Click nodes on the map.
                 </div>
-
+                
                 <div class="asset-grid" style="gap:10px; margin-bottom: 20px;">
                     <div class="ac ah">
                         <div class="ac-n">Equities</div>
@@ -1686,7 +1624,7 @@
                         <div class="ac-v" id="simCred">0.0bp</div>
                     </div>
                 </div>
-
+                
                 <div class="vol-row" style="margin-bottom: 8px;">
                     <div class="vol-lbl">Rate Vol</div>
                     <div class="vol-tr">
@@ -1717,8 +1655,7 @@
                 </div>
             </div>
             <div style="padding: 15px 20px;">
-                <button class="btn btn-c" style="width: 100%; padding: 10px; font-size: 12px;"
-                    onclick="clearMapSelection()">Clear Selection</button>
+                <button class="btn btn-c" style="width: 100%; padding: 10px; font-size: 12px;" onclick="clearMapSelection()">Clear Selection</button>
             </div>
         </div>
     </div>
@@ -2079,155 +2016,6 @@
             return feed.slice(0, 80);
         }
 
-        // ── RENDER: CUSTOM EVENT CARDS ────────────────────────────────────────────
-        function renderMarketCard(it, i) {
-            const syms = it.symbols.map(s => {
-                const c = s.chg >= 0 ? 'var(--accent-teal)' : 'var(--signal-hot)';
-                const dir = s.chg >= 0 ? '▲' : '▼';
-                return `<div style="flex:1;text-align:center;padding:10px;background:var(--bg-panel);border-radius:6px;border:1px solid var(--border);">
-                    <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--text-secondary);font-size:11px;">${s.sym}</div>
-                    <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:16px;color:var(--text-primary);margin:4px 0;">$${s.px}</div>
-                    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:${c};">${dir} ${Math.abs(s.chg).toFixed(2)}%</div>
-                </div>`;
-            }).join('');
-
-            return `<div class="fi sig-card" style="animation-delay:${i * 0.025}s">
-                <div class="fi-top" style="margin-bottom:12px;">
-                    <div class="fi-hl" style="color:var(--text-primary);display:flex;align-items:center;gap:8px;">
-                       <span style="font-size:18px;">📈</span>
-                       <span>MARKET MOVERS</span>
-                    </div>
-                    <div class="badge b-s">LIVE PRICING</div>
-                </div>
-                <div style="display:flex;gap:8px;">${syms}</div>
-            </div>`;
-        }
-
-        function renderAviationCard(it, i) {
-            return `<div class="fi wrm-card" style="animation-delay:${i * 0.025}s;border-color:rgba(255,140,66,0.3);">
-                <div class="fi-top" style="margin-bottom:12px;">
-                    <div class="fi-hl" style="color:var(--signal-warm);display:flex;align-items:center;gap:8px;">
-                       <span style="font-size:18px;">✈️</span>
-                       <span>AVIATION DISRUPTION</span>
-                    </div>
-                    <div class="badge b-w">GROUND DELAY</div>
-                </div>
-                <div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg-panel);padding:12px 16px;border-radius:8px;border:1px solid rgba(255,140,66,0.15);">
-                    <div style="display:flex;align-items:center;gap:12px;">
-                        <div style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600;color:var(--text-primary);background:var(--bg-card);padding:4px 8px;border-radius:4px;border:1px solid var(--border);">${it.airport}</div>
-                        <div>
-                           <div style="font-size:12px;color:var(--signal-warm);font-weight:500;">${it.status}</div>
-                           <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:2px;">Trend: ${it.trend}</div>
-                        </div>
-                    </div>
-                    <div style="text-align:right;">
-                        <div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:700;color:var(--signal-hot);">${it.delayMins} <span style="font-size:12px;color:var(--text-secondary);">min</span></div>
-                        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text-dim);">AVG DELAY</div>
-                    </div>
-                </div>
-            </div>`;
-        }
-
-        function renderClimateCard(it, i) {
-            return `<div class="fi" style="animation-delay:${i * 0.025}s;border-color:rgba(255,59,92,.3);">
-                <div class="fi-top" style="margin-bottom:12px;">
-                    <div class="fi-hl" style="color:var(--signal-hot);display:flex;align-items:center;gap:8px;">
-                       <span style="font-size:18px;">🌡️</span>
-                       <span>CLIMATE ANOMALY</span>
-                    </div>
-                    <div class="badge b-s">EXTREME</div>
-                </div>
-                <div style="background:linear-gradient(90deg, rgba(255,59,92,0.1) 0%, transparent 100%);padding:12px;border-radius:8px;border-left:3px solid var(--signal-hot);">
-                    <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:6px;">
-                        <span style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--signal-hot);">${it.metric}</span>
-                        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-secondary);">vs ${it.baseline}</span>
-                    </div>
-                    <div style="font-size:12px;color:var(--text-primary);">Impact: <span style="font-weight:500;">${it.impact}</span></div>
-                    <div style="width:100%;height:4px;background:rgba(255,255,255,0.05);border-radius:2px;margin-top:10px;overflow:hidden;">
-                        <div style="width:85%;height:100%;background:linear-gradient(90deg, var(--signal-warm), var(--signal-hot));border-radius:2px;"></div>
-                    </div>
-                </div>
-            </div>`;
-        }
-
-        function renderEarthquakeCard(it, i) {
-            return `<div class="fi" style="animation-delay:${i * 0.025}s;border-color:rgba(255,140,66,.2);">
-                <div class="fi-top" style="margin-bottom:12px;">
-                    <div class="fi-hl" style="color:var(--signal-warm);display:flex;align-items:center;gap:8px;">
-                       <span style="font-size:18px;">🌍</span>
-                       <span>SEISMIC ALERT</span>
-                    </div>
-                    <div class="badge b-w">USGS RECENT</div>
-                </div>
-                <div style="display:flex;align-items:center;gap:15px;background:rgba(255,140,66,0.05);padding:12px;border-radius:8px;border:1px solid rgba(255,140,66,0.15);">
-                    <div style="text-align:center;">
-                        <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--signal-warm);line-height:1;">${it.mag}</div>
-                        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text-dim);margin-top:4px;">MAGNITUDE</div>
-                    </div>
-                    <div style="width:1px;height:35px;background:var(--border);"></div>
-                    <div style="flex:1;">
-                        <div style="font-size:13px;color:var(--text-primary);font-weight:500;line-height:1.3;">${esc(it.loc)}</div>
-                        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-secondary);margin-top:6px;">DEPTH: ${it.depth}</div>
-                    </div>
-                </div>
-            </div>`;
-        }
-
-        function renderEnrichmentCard(it, i) {
-            return `<div class="fi" style="animation-delay:${i * 0.025}s;border-color:var(--border-bright);">
-                <div class="fi-top" style="margin-bottom:12px;">
-                    <div class="fi-hl" style="display:flex;align-items:center;gap:8px;">
-                       <span style="font-size:18px;">🔍</span>
-                       <span>DATA ENRICHMENT: <span style="color:var(--accent-cyan);">${it.company}</span></span>
-                    </div>
-                    <div class="badge b-n">OSINT</div>
-                </div>
-                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
-                    <div style="background:var(--bg-panel);padding:8px;border-radius:6px;border:1px solid var(--border);text-align:center;">
-                        <div style="font-size:16px;margin-bottom:4px;">🐙</div>
-                        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--accent-teal);font-weight:600;">${it.github}</div>
-                        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text-dim);margin-top:2px;">CODEBASE</div>
-                    </div>
-                    <div style="background:var(--bg-panel);padding:8px;border-radius:6px;border:1px solid var(--border);text-align:center;">
-                        <div style="font-size:16px;margin-bottom:4px;">📄</div>
-                        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-primary);font-weight:600;">${it.sec}</div>
-                        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text-dim);margin-top:2px;">SEC FILINGS</div>
-                    </div>
-                    <div style="background:var(--bg-panel);padding:8px;border-radius:6px;border:1px solid var(--border);text-align:center;">
-                        <div style="font-size:16px;margin-bottom:4px;">💻</div>
-                        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--signal-warm);font-weight:600;">${it.hn}</div>
-                        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text-dim);margin-top:2px;">HACKER NEWS</div>
-                    </div>
-                </div>
-            </div>`;
-        }
-
-        function renderCompanySignalCard(it, i) {
-            return `<div class="fi signal" style="animation-delay:${i * 0.025}s;">
-                <div class="fi-top" style="margin-bottom:12px;">
-                    <div class="fi-hl" style="display:flex;align-items:center;gap:8px;">
-                       <span style="font-size:18px;">🎯</span>
-                       <span>STRATEGIC SIGNAL: <span style="color:var(--text-primary);">${it.company}</span></span>
-                    </div>
-                    <div class="badge b-s">HIGH CONVICTION</div>
-                </div>
-                <div style="display:flex;flex-direction:column;gap:6px;">
-                    <div style="display:flex;align-items:center;gap:10px;background:var(--bg-panel);padding:8px 12px;border-radius:6px;border-left:2px solid var(--accent-cyan);">
-                        <span style="font-size:14px;">💰</span>
-                        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-primary);">${it.funding}</span>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:10px;background:var(--bg-panel);padding:8px 12px;border-radius:6px;border-left:2px solid var(--accent-teal);">
-                        <span style="font-size:14px;">👥</span>
-                        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-primary);">${it.hiring}</span>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:10px;background:var(--bg-panel);padding:8px 12px;border-radius:6px;border-left:2px solid var(--signal-warm);">
-                        <span style="font-size:14px;">👔</span>
-                        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-primary);">${it.exec}</span>
-                    </div>
-                </div>
-            </div>`;
-        }
-
         // ── RENDER: FEED ──────────────────────────────────────────────────────────
         function renderFeed() {
             const items = S.feed.filter(it => {
@@ -2236,19 +2024,12 @@
                 if (!F.regions.has(reg) && !F.regions.has(it.region || 'Global')) return false;
                 if (it.theme && !F.topics.has(it.theme.id)) return false;
                 if (S.allSrc.size > 0 && F.sources.size > 0 && !F.sources.has(it.src)) return false;
-                if (F.q && !it.title?.toLowerCase().includes(F.q.toLowerCase()) && !it.src?.toLowerCase().includes(F.q.toLowerCase())) return false;
+                if (F.q && !it.title.toLowerCase().includes(F.q.toLowerCase()) && !it.src.toLowerCase().includes(F.q.toLowerCase())) return false;
                 return true;
             });
             const el = document.getElementById('feed');
             if (!items.length) { el.innerHTML = `<div class="empty"><div style="font-size:24px;margin-bottom:8px">🔇</div>No items match current filters</div>`; return; }
             el.innerHTML = items.map((it, i) => {
-                if (it.type === 'market') return renderMarketCard(it, i);
-                if (it.type === 'aviation') return renderAviationCard(it, i);
-                if (it.type === 'climate') return renderClimateCard(it, i);
-                if (it.type === 'earthquake') return renderEarthquakeCard(it, i);
-                if (it.type === 'enrichment') return renderEnrichmentCard(it, i);
-                if (it.type === 'company_signal') return renderCompanySignalCard(it, i);
-
                 const bCls = it.cls === 'signal' ? 'b-s' : it.cls === 'warm' ? 'b-w' : 'b-n';
                 const bTxt = it.cls === 'signal' ? '⚡ SIGNAL' : it.cls === 'warm' ? '⚠ WARM' : '— NOISE';
                 const tc = it.theme?.color || 'var(--text-secondary)';
@@ -2413,25 +2194,50 @@
         }
         function toggleRegion(el) {
             const r = el.dataset.r;
-            if (F.regions.has(r)) { F.regions.delete(r); el.classList.remove('on'); }
-            else { F.regions.add(r); el.classList.add('on'); }
+            if (F.regions.size === 1 && F.regions.has(r)) {
+                ['US', 'EU', 'APAC', 'MENA', 'Global'].forEach(x => F.regions.add(x));
+            } else {
+                F.regions.clear();
+                F.regions.add(r);
+            }
+            
+            document.querySelectorAll('#regionChips .chip').forEach(c => {
+                if (F.regions.has(c.dataset.r)) c.classList.add('on');
+                else c.classList.remove('on');
+            });
             renderFeed();
         }
         function toggleTopicChip(el) {
             const id = el.dataset.topic;
-            if (F.topics.has(id)) { F.topics.delete(id); el.className = 'chip excl'; }
-            else { F.topics.add(id); el.className = 'chip on'; }
-            renderThemes(); renderHot(); renderFeed();
+            if (F.topics.size === 1 && F.topics.has(id)) {
+                THEMES.forEach(t => F.topics.add(t.id));
+            } else {
+                F.topics.clear();
+                F.topics.add(id);
+            }
+            renderTopicChips(); renderThemes(); renderHot(); renderFeed();
         }
         function toggleTopicId(id) {
-            if (F.topics.has(id)) F.topics.delete(id); else F.topics.add(id);
+            if (F.topics.size === THEMES.length) {
+                F.topics.clear();
+                F.topics.add(id);
+            } else if (F.topics.has(id)) {
+                F.topics.delete(id);
+                if (F.topics.size === 0) THEMES.forEach(t => F.topics.add(t.id));
+            } else {
+                F.topics.add(id);
+            }
             renderTopicChips(); renderThemes(); renderHot(); renderFeed();
         }
         function toggleSource(el) {
             const s = el.dataset.src;
-            if (F.sources.has(s)) { F.sources.delete(s); el.classList.remove('on'); }
-            else { F.sources.add(s); el.classList.add('on'); }
-            renderFeed();
+            if (F.sources.size === 1 && F.sources.has(s)) {
+                S.allSrc.forEach(src => F.sources.add(src));
+            } else {
+                F.sources.clear();
+                F.sources.add(s);
+            }
+            renderSourceChips(); renderFeed();
         }
 
         // ── TAB SWITCH ────────────────────────────────────────────────────────────
@@ -2455,18 +2261,7 @@
                 const rawNews = [...guardian, ...reddit, ...hn];
                 S.news = rawNews;
                 S.poly = poly; S.kalshi = kalshi;
-
-                // ── MOCK DATA FOR NEW VISUALIZATIONS ──
-                const mockItems = [
-                    { type: 'market', title: 'Market Pulse', src: 'WorldMonitor', region: 'US', pubDate: new Date().toISOString(), cls: 'signal', symbols: [{ sym: 'AAPL', px: 228.34, chg: 1.45 }, { sym: 'MSFT', px: 412.11, chg: -0.23 }, { sym: 'GOOGL', px: 164.88, chg: 0.89 }] },
-                    { type: 'aviation', title: 'Major Hub Disruption', src: 'FAA/Eurocontrol', region: 'EU', pubDate: new Date().toISOString(), cls: 'warm', airport: 'LHR', status: 'SEVERE DELAY', delayMins: 85, trend: 'Worsening' },
-                    { type: 'climate', title: 'Temperature Anomaly Detected', src: 'ERA5 Reanalysis', region: 'Global', pubDate: new Date().toISOString(), cls: 'signal', metric: '+4.2°C', baseline: '30-year average', impact: 'Extreme Heat Stress' },
-                    { type: 'earthquake', title: 'Seismic Event: Ring of Fire', src: 'USGS', region: 'APAC', pubDate: new Date().toISOString(), cls: 'warm', mag: 6.4, loc: '12km N of Tokyo, Japan', depth: '45 km' },
-                    { type: 'company_signal', title: 'Strategic Moves Detected', src: 'Signal Discovery', region: 'US', pubDate: new Date().toISOString(), cls: 'signal', company: 'OpenAI', funding: '$6.5B Series Funding', hiring: 'Engineering hires up 40%', exec: 'New CFO appointed' },
-                    { type: 'enrichment', title: 'Entity Profile Update', src: 'Enrichment Engine', region: 'Global', pubDate: new Date().toISOString(), cls: 'noise', company: 'Stripe', github: '+42 commits', sec: 'Form 10-Q filed', hn: 'High mention volume' }
-                ];
-
-                S.feed = [...mockItems, ...runEngine(rawNews, poly, kalshi)];
+                S.feed = runEngine(rawNews, poly, kalshi);
                 renderSourceChips();
                 renderTopicChips();
                 renderThemes(); renderHot(); renderFeed(); renderMarkets(); renderRightNews(); renderAssets();
@@ -2501,19 +2296,19 @@
             { id: 'TARIFF-1', title: 'US-China tariff truce in 2026?', prob: 34, delta: -6, vol: 42000, source: 'kalshi', kw: 'tariff china trade' },
         ];
 
-
+        
         // ── MACRO CONNECTOR GRAPH MAP LOGIC ───────────────────────────────────────
         let map = null;
         let selectedEvents = new Set();
         let mapNodes = [];
-
+        
         function switchMainTab(tab) {
             document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
             document.getElementById('nt-' + tab).classList.add('active');
-
-
-            try { document.getElementById('vault-layout').style.display = 'none'; } catch (e) { }
-
+            
+            
+            try { document.getElementById('vault-layout').style.display = 'none'; } catch(e) {}
+            
             if (tab === 'feed') {
                 document.getElementById('main-feed-layout').style.display = 'grid';
                 document.getElementById('connector-layout').style.display = 'none';
@@ -2528,7 +2323,7 @@
                 document.getElementById('vault-layout').style.display = 'block';
             }
         }
-
+        
         function initMap() {
             // Initialize Leaflet Map
             map = L.map('macroMap', { zoomControl: false, attributionControl: false }).setView([25, 10], 2);
@@ -2536,7 +2331,7 @@
                 subdomains: 'abcd',
                 maxZoom: 10
             }).addTo(map);
-
+            
             // Map event nodes
             const events = [
                 { id: 'fed', name: 'US Fed Policy', coord: [38.9, -77] },
@@ -2550,14 +2345,14 @@
                 { id: 'mena', name: 'Middle East Turmoil', coord: [31.5, 34.8] },
                 { id: 'ai', name: 'AI Capex Cycle (US)', coord: [37.3, -122] }
             ];
-
+            
             const defaultIcon = L.divIcon({ className: 'custom-map-marker', html: '<div style="width:12px;height:12px;background:var(--accent-cyan);border-radius:50%;box-shadow:0 0 10px var(--accent-cyan);cursor:pointer;border:2px solid #fff;"></div>' });
             const selectedIcon = L.divIcon({ className: 'custom-map-marker-sel', html: '<div style="width:16px;height:16px;background:var(--signal-hot);border-radius:50%;box-shadow:0 0 15px var(--signal-hot);cursor:pointer;border:2px solid #fff;"></div>' });
-
+            
             events.forEach(ev => {
                 const marker = L.marker(ev.coord, { icon: defaultIcon }).addTo(map);
                 marker.bindTooltip(ev.name, { permanent: true, direction: 'top', className: 'map-tt', offset: [0, -10] });
-
+                
                 marker.on('click', () => {
                     if (selectedEvents.has(ev.id)) {
                         selectedEvents.delete(ev.id);
@@ -2570,37 +2365,77 @@
                 });
                 mapNodes.push({ id: ev.id, marker });
             });
-
+            
             // Inject minor CSS for tooltips
             const style = document.createElement('style');
             style.innerHTML = '.map-tt { background: transparent; border: none; box-shadow: none; color: var(--text-primary); font-family: "IBM Plex Mono", monospace; font-size: 10px; text-shadow: 0 1px 3px rgba(0,0,0,1); }';
             document.head.appendChild(style);
         }
-
+        
         function clearMapSelection() {
             selectedEvents.clear();
             const defaultIcon = L.divIcon({ className: 'custom-map-marker', html: '<div style="width:12px;height:12px;background:var(--accent-cyan);border-radius:50%;box-shadow:0 0 10px var(--accent-cyan);cursor:pointer;border:2px solid #fff;"></div>' });
             mapNodes.forEach(n => n.marker.setIcon(defaultIcon));
             updateConnectorImpact();
         }
-
-
+        
+        
         let mapLines = [];
+        
+        // ── MEMORY VAULT MOCK DB & LOGIC ──────────────────────────────────────────
+        const VAULT_DB = [
+            { date: 'Mar 2023', event: 'SVB Collapse & Regional Bank Crisis', prob: '88%', pColor: 'var(--signal-hot)', outText: 'REALIZED', outCls: 'b-s', imp1: '<span style="color:var(--signal-hot)">Eq -4.5%</span>', imp2: '<span style="color:var(--accent-teal)">Bd +2.1%</span>', kw: 'svb collapse bank crisis regional 2023' },
+            { date: 'Oct 2023', event: '10Y Treasury Reaches 5.0%', prob: '74%', pColor: 'var(--signal-hot)', outText: 'REALIZED', outCls: 'b-s', imp1: '<span style="color:var(--signal-hot)">Eq -6.2%</span>', imp2: '<span style="color:var(--signal-hot)">Bd -3.4%</span>', kw: 'treasury 5.0% 5% yield curve steepening October 2023' },
+            { date: 'Jan 2024', event: 'Fed Cuts Rates in Q1', prob: '22%', pColor: 'var(--accent-cyan)', outText: 'FALSE', outCls: 'b-n', imp1: '<span style="color:var(--text-dim)">Minimal Baseline</span>', imp2: '', kw: 'fed cut rate hike pause 2024 q1' },
+            { date: 'Jul 2024', event: 'Bank of Japan Rate Hike (Yen Carry Unwind)', prob: '81%', pColor: 'var(--signal-hot)', outText: 'REALIZED', outCls: 'b-s', imp1: '<span style="color:var(--signal-hot)">Eq Vol +65%</span>', imp2: '<span style="color:var(--signal-hot)">FX JPY +11%</span>', kw: 'japan bank doj rate hike carry unwind yen jpy yen' },
+            { date: 'Feb 2020', event: 'COVID-19 Global Pandemic Market Crash', prob: '96%', pColor: 'var(--signal-hot)', outText: 'REALIZED', outCls: 'b-s', imp1: '<span style="color:var(--signal-hot)">Eq -34.0%</span>', imp2: '<span style="color:var(--signal-hot)">Rate Vol +120%</span>', kw: 'covid pandemic crash lockdown 2020 coronavirus' },
+            { date: 'Mar 2022', event: 'Fed Begins "Aggressive" Rate Hike Cycle', prob: '92%', pColor: 'var(--signal-hot)', outText: 'REALIZED', outCls: 'b-s', imp1: '<span style="color:var(--signal-hot)">Eq -19.4%</span>', imp2: '<span style="color:var(--signal-hot)">Bd -13.0%</span>', kw: 'fed rate hike 2022 inflation cycle powell' },
+            { date: 'Sep 2022', event: 'UK Mini-Budget Gilt Crisis', prob: '65%', pColor: 'var(--signal-warm)', outText: 'REALIZED', outCls: 'b-s', imp1: '<span style="color:var(--signal-hot)">GBP -8.0%</span>', imp2: '<span style="color:var(--signal-hot)">UK Yields +120bp</span>', kw: 'uk budget gilt crisis truss kwasi pound gbp 2022' }
+        ];
+
+        function renderVault(query = "") {
+            const tbody = document.getElementById('vaultTableBody');
+            const q = query.toLowerCase().trim();
+            const filtered = VAULT_DB.filter(v => 
+                v.event.toLowerCase().includes(q) || 
+                v.date.toLowerCase().includes(q) || 
+                v.kw.toLowerCase().includes(q)
+            );
+            
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="padding: 40px; text-align: center; color: var(--text-dim); font-family: 'IBM Plex Mono', monospace;">No historical matches found for "${query}"</td></tr>`;
+                return;
+            }
+            
+            tbody.innerHTML = filtered.map(v => `
+                <tr style="border-bottom: 1px solid var(--border); cursor: pointer;" onclick="alert('Insight details for: ${v.event}')">
+                    <td style="padding: 16px 20px; font-family: 'IBM Plex Mono', monospace; font-size: 12px;">${v.date}</td>
+                    <td style="padding: 16px 20px; font-weight: 500;">${v.event}</td>
+                    <td style="padding: 16px 20px; font-family: 'IBM Plex Mono', monospace; color: ${v.pColor};">${v.prob}</td>
+                    <td style="padding: 16px 20px;"><div class="badge ${v.outCls}">${v.outText}</div></td>
+                    <td style="padding: 16px 20px; font-family: 'IBM Plex Mono', monospace;">${v.imp1} ${v.imp2}</td>
+                </tr>
+            `).join('');
+        }
+
+        function filterVault(query) {
+            renderVault(query);
+        }
 
         async function updateConnectorImpact() {
             const arr = Array.from(selectedEvents);
             document.getElementById('selectedEventsDisplay').textContent = arr.length ? 'Evaluating: ' + arr.join(', ') : 'No events selected. Click nodes on the map.';
-
+            
             // Clear existing lines
             mapLines.forEach(l => map.removeLayer(l));
             mapLines = [];
-
+            
             // Re-draw lines for active nodes to "Global Markets Hub" (London roughly)
             const hub = [51.5, -0.1];
-
+            
             // Capture Probability weights from Prediction Markets for the Backend
             const eventsPayload = [];
-
+            
             const eventsData = [
                 { id: 'fed', name: 'US Fed Policy', coord: [38.9, -77] },
                 { id: 'inflation', name: 'US Inflation Data', coord: [40.7, -74] },
@@ -2613,24 +2448,24 @@
                 { id: 'mena', name: 'Middle East Turmoil', coord: [31.5, 34.8] },
                 { id: 'ai', name: 'AI Capex Cycle (US)', coord: [37.3, -122] }
             ];
-
+            
             arr.forEach(id => {
                 const node = eventsData.find(e => e.id === id);
                 let weight = 0.5; // Default 50%
-
+                
                 // Lookup live prob if exists in S.poly or S.kalshi
                 const allMkts = [...S.poly, ...S.kalshi];
                 const matchingMkt = allMkts.find(m => m.kw && m.kw.includes(id));
                 if (matchingMkt && matchingMkt.prob) {
                     weight = matchingMkt.prob;
                 }
-
+                
                 eventsPayload.push({
                     id: id,
                     prob: weight,
                     mult: weight > 65 ? 1.5 : 1.0 // Multiplier if highly likely
                 });
-
+                
                 if (node) {
                     // Draw animated dashed polyline
                     const polyline = L.polyline([node.coord, hub], {
@@ -2643,51 +2478,67 @@
                     mapLines.push(polyline);
                 }
             });
-
+            
             try {
-                // Point to local dev server or relative
-                const res = await fetch('http://localhost:3000/api/connector/impact', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ events: eventsPayload })
-                });
-
-                const body = await res.json();
-                if (body && body.status === 'success') {
-                    const d = body.data;
+                // Local mock since no backend exists
+                let simEq = 0, simBond = 0, simFx = 0, simCmd = 0, simCredSpreads = 0;
+                let simRate = 35, simEqVol = 25, simFxVol = 20, simCredStress = 20;
+                
+                if (arr.length > 0) {
+                    arr.forEach(id => {
+                        const node = eventsPayload.find(e => e.id === id);
+                        const m = node ? node.mult : 1;
+                        if (id === 'fed' || id === 'inflation') { simEq -= 2.4 * m; simBond -= 3.1 * m; simFx += 1.8 * m; simCredSpreads += 6 * m; simRate += 18 * m; }
+                        else if (id === 'taiwan') { simEq -= 1.8 * m; simFx += 0.5 * m; simEqVol += 10 * m; simCredSpreads += 5 * m; }
+                        else if (id === 'tariff') { simEq -= 1.4 * m; simFx += 0.9 * m; simCmd += 0.5 * m; simCredSpreads += 4 * m; }
+                        else if (id === 'china') { simEq -= 0.8 * m; simCmd -= 1.2 * m; simFx -= 0.4 * m; }
+                        else if (id === 'ecb') { simFx -= 1.1 * m; simBond += 0.8 * m; simFxVol += 14 * m; }
+                        else if (id === 'ukraine') { simEq -= 0.5 * m; simCmd += 1.5 * m; simEqVol += 5 * m; }
+                        else if (id === 'oil' || id === 'mena') { simCmd += 4.2 * m; simEq -= 1.2 * m; simFx += 0.6 * m; simCredSpreads += 2 * m; }
+                        else if (id === 'ai') { simEq += 2.5 * m; simEqVol += 8 * m; }
+                    });
+                }
+                
+                const d = {
+                    equities: simEq, bonds: simBond, fx: simFx, commodities: simCmd, creditSpreads: simCredSpreads,
+                    rateVol: Math.min(96, simRate), equityVol: Math.min(96, simEqVol), fxVol: Math.min(96, simFxVol), creditStress: Math.min(96, simCredStress + Math.abs(simCredSpreads * 8))
+                };
+                
+                if (true) {
                     document.getElementById('simEq').textContent = (d.equities > 0 ? '+' : '') + d.equities.toFixed(1) + '%';
                     document.getElementById('simEq').style.color = d.equities > 0 ? 'var(--accent-teal)' : 'var(--signal-hot)';
-
+                    
                     document.getElementById('simBond').textContent = (d.bonds > 0 ? '+' : '') + d.bonds.toFixed(1) + '%';
                     document.getElementById('simBond').style.color = d.bonds > 0 ? 'var(--accent-teal)' : 'var(--signal-hot)';
-
+                    
                     document.getElementById('simFx').textContent = (d.fx > 0 ? '+' : '') + d.fx.toFixed(1) + '%';
                     document.getElementById('simFx').style.color = d.fx > 0 ? 'var(--signal-hot)' : 'var(--accent-teal)';
-
+                    
                     document.getElementById('simCmd').textContent = (d.commodities > 0 ? '+' : '') + d.commodities.toFixed(1) + '%';
                     document.getElementById('simCmd').style.color = d.commodities > 0 ? 'var(--signal-hot)' : 'var(--accent-teal)';
-
+                    
                     document.getElementById('simCred').textContent = (d.creditSpreads > 0 ? '+' : '') + (d.creditSpreads * 10).toFixed(0) + 'bp';
                     document.getElementById('simCred').style.color = d.creditSpreads > 0 ? 'var(--signal-hot)' : 'var(--accent-teal)';
-
+                    
                     let simRate = d.rateVol, simEqVol = d.equityVol, simFxVol = d.fxVol, simCredStress = d.creditStress;
                     if (arr.length === 0) { simRate = 35; simEqVol = 25; simFxVol = 20; simCredStress = 20; }
-
+                    
                     const setVol = (x, val) => {
-                        document.getElementById('sim' + x + 'V').textContent = val + '%';
-                        document.getElementById('sim' + x + 'B').style.width = val + '%';
+                        document.getElementById('sim'+x+'V').textContent = val + '%';
+                        document.getElementById('sim'+x+'B').style.width = val + '%';
                     }
                     setVol('Rate', simRate);
                     setVol('Eq', simEqVol);
                     setVol('Fx', simFxVol);
                     setVol('Cred', simCredStress);
                 }
-            } catch (e) { console.error('Error fetching impact', e); }
+            } catch(e) { console.error('Error fetching impact', e); }
         }
 
         // INIT
         THEMES.forEach(t => { S.th[t.id] = t.history.slice(); });
         renderTopicChips();
+        renderVault(); // Initialize memory vault
         document.querySelectorAll('.nav-tab').forEach(t => t.addEventListener('click', () => {
             document.querySelectorAll('.nav-tab').forEach(x => x.classList.remove('active')); t.classList.add('active');
         }));
@@ -2696,3 +2547,5 @@
 </body>
 
 </html>
+
+
